@@ -4,12 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon — exec babel-node index.js",
+    "build": "babel index.js — out-file index-compiled.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "tpg",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
+    "json-server": "^0.16.3",
+    "nodemon": "^2.0.7",
     "sqlite3": "^5.0.2"
   },
   "_id": "forum_api@1.0.0"
