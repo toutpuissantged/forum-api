@@ -12,11 +12,27 @@ router.get("/post/details/:id",cors(),(req,res) => {
     let postid=String()
     let dbresult=''
     postid = parseInt(req.params.id)
-    const query='SELECT '+reqmake(dbschema.postinfo)+' FROM postinfo WHERE postid="'+postid+'" '
+    const query='SELECT * FROM postinfo WHERE postid='+postid+' '
     db.each(query, function(err, row) {
         const testmeme=row
         if (err) console.log(err)
         res.json(JSON.stringify(testmeme))
+
+    });
+    //res.send('error!!!')
+})
+
+router.get("/post/all",cors(),(req,res) => {
+    const query='SELECT * FROM postinfo '
+    db.all(query, function(err, row) {
+        const testmeme = row
+        if (err) {
+            console.log(err)
+            res.send('500')
+            return 0
+        }
+        res.json(JSON.stringify(testmeme)) 
+        
 
     });
     //res.send('error!!!')
@@ -59,6 +75,31 @@ router.get("/post/details/adcomment/id/:id/name/:name/email/:email/website/:webs
 
     });
     res.send('200')
+})
+
+router.get("/post/ask/title/:title/name/:name/email/:email/post/:post",cors(),(req,res) => {
+    console.log(req.params)
+    const params=req.params
+    const date= new Date()
+    let autor={
+        name:params.name,
+        userId:0,
+        email:params.email,
+    }
+    autor=JSON.stringify(autor)
+    const dateparsed=date.getTime() 
+    //console.log(date.toString(dateparsed));
+    const dataformated=date.toString(dateparsed)
+    let sql = 'INSERT INTO postinfo(title,content,createddate,lastupdate,comments,autor) VALUES (?,?,?,?,?,?)';
+    let query_data=[params.title,params.post,dataformated,dataformated,'[]',autor]
+    db.run(sql,query_data,(err)=>{
+        if (err) {
+            return console.error(err.message);
+            }
+            console.log('Row(s) updated');
+    })
+    res.send('200') 
+    console.log('completed!!!');
 })
 
 module.exports = router;
